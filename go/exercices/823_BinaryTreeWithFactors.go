@@ -1,19 +1,41 @@
 package exercices
 
-type Node struct {
-	left *Node
-	right *Node
-	data int
-}
+import (
+	"sort"
+)
 
 func NumFactoredBinaryTrees(arr []int) int {
-	if isValidInput(arr) {
+	result := 0
+	mod := 1_000_000_007
 
+	if isValidInput(arr) {
+		hash := make(map[int]int)
+		sort.Ints(arr)
+
+		for i, num := range arr {
+			hash[num] = 1
+			for j := 0; j < i; j++ {
+				candidate := arr[j]
+				if num % candidate == 0 {
+					hash[num] += hash[candidate] * hash[num / candidate]
+					hash[num] %= mod
+				}
+			}
+		}
+
+		for _, count := range hash {
+			result += count
+		}
 	}
-	return 0
+
+	return result % mod
 }
 
 func isValidInput(arr []int) bool {
+	return len(arr) > 0 && isPositive(arr) && isUnique(arr)
+}
+
+func isPositive(arr []int) bool {
 	for _, num := range arr {
 		if num < 1 {
 			return false
@@ -22,30 +44,13 @@ func isValidInput(arr []int) bool {
 	return true;
 }
 
-// Given an array of unique integers, arr, where each integer arr[i] is strictly greater than 1.
-// We make a binary tree using these integers, and each number may be used for any number of times.
-// Each non-leaf node's value should be equal to the product of the values of its children.
-// Return the number of binary trees we can make.
-// The answer may be too large so return the answer modulo 109 + 7.
-
-
-
-// Example 1:
-
-// Input: arr = [2,4]
-// Output: 3
-// Explanation: We can make these trees: [2], [4], [4, 2, 2]
-
-// Example 2:
-
-// Input: arr = [2,4,5,10]
-// Output: 7
-// Explanation: We can make these trees: [2], [4], [5], [10], [4, 2, 2], [10, 2, 5], [10, 5, 2].
-
-
-
-// Constraints:
-
-//     1 <= arr.length <= 1000
-//     2 <= arr[i] <= 109
-//     All the values of arr are unique.
+func isUnique(arr []int) bool {
+	unique := make(map[int]int)
+	for _, num := range arr {
+		if _, ok := unique[num]; ok {
+			return false
+		}
+		unique[num] = 1
+	}
+	return true
+}

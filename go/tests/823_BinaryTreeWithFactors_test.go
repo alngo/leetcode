@@ -13,6 +13,7 @@ type Data struct {
 var dataProvider = []Data {
 	{[]int {2, 4}, 3},
 	{[]int {2, 4, 5, 10}, 7},
+	{[]int {15, 13, 22, 7, 11}, 5},
 }
 
 func Test_numFactoredBinaryTrees(t *testing.T) {
@@ -22,5 +23,4 @@ func Test_numFactoredBinaryTrees(t *testing.T) {
 			t.Errorf("For %v, espected [%d] but got [%d]", data.input, data.expected, actual)
 		}
 	}
-
 }
