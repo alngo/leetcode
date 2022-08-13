@@ -1,1 +1,1 @@
-pub mod binary_tree_with_factors_823;
+pub mod binary_tree_with_factors;
