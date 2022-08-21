@@ -1,7 +1,34 @@
-package exercices
+package tests
 
-func MovesToStamp(stamp string, target string) []int {
-    return []int{0}
+import (
+	"leetcode/go/exercices"
+	"testing"
+  "reflect"
+)
+
+type input struct {
+    stamp string
+    target string
+}
+
+type Data936 struct {
+    input input
+    expected []int
+}
+
+var dataProvider936 = []Data936 {
+    {input{"abc", "ababc"}, []int{0, 2}},
+    {input{"abca", "aabcaca"}, []int{3, 0 , 1}},
+}
+
+func Test_movesToStamp(t *testing.T) {
+    for _, data := range dataProvider936 {
+        actual := exercices.MovesToStamp(data.input.stamp, data.input.target);
+        if !reflect.DeepEqual(actual, data.expected) {
+            t.Errorf("For %s and %v, expected %v but got %v",
+            data.input.stamp, data.input.target, data.expected, actual)
+        }
+    }
 }
 
 // You are given two strings stamp and target. Initially, there is a string s of length target.length with all s[i] == '?'.
